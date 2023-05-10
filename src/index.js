@@ -69,7 +69,19 @@ const generateTask = myTask => {
  
     });
 
+    taskDesc.addEventListener('input', () => {
+        myTask.description = formInput.value;
+    });
 
+    taskDesc.addEventListener('blur', () => {
+        taskDesc.setAttribute('disabled', "");
+        
+    });
+    taskDesc.addEventListener('hover', () => {
+        taskDesc.removeAttribute('disabled');
+        taskDesc.focus();
+       
+    });
     
     return { taskItem, taskDesc, ellipses }
 }
