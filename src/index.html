@@ -4,10 +4,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="./styles/main.css"> -->
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
 </head>
 <body>
-    <h1>Hello World!! Your WEPACK ENVIRONMENT is READY</h1>    
+    <div class="wrapper" id="container">
+        <div class="heading">
+            <h3>Demo</h3>
+            <button><i class="uil uil-sync"></i></button>
+           
+        </div>
+    
+        <form class="insert">
+            <input type="text" placeholder="Add to your list..." class="input">
+            <button type="submit"id="create"><i class="uil uil-enter"></i></button>
+            
+        </form>
+
+        <!-- Tasks Dynamically Generated -->
+
+        <div class="all-tasks"></div>
+
+        <div class="clear">
+            <button>Clear all Completed</button> 
+        </div>
+    </div>
+<!-- <script src="script.js"></script> -->
 </body>
 </html>
