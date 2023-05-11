@@ -1,39 +1,33 @@
 import './styles/main.css';
 
 const taskContainer = document.querySelector('.all-tasks');
-const tasks = [
-  {
-    id: Date.now(),
-    completed: false,
-    description: 'Make my meals',
-  },
-  {
-    id: Date.now(),
-    completed: false,
-    description: 'Take kids to school',
-  },
-  {
-    id: Date.now(),
-    completed: false,
-    description: 'Report to Work',
-  },
-  {
-    id: Date.now(),
-    completed: false,
-    description: 'Be happy to Code',
-  },
-];
+const createTask = document.getElementById('create');
+const formInput = document.querySelector('.input');
+const form = document.querySelector('form');
 
-tasks.forEach((task, e) => {
+let tasks = [];
+
+const storage = () => {
+  const save = JSON.stringify(tasks);
+  localStorage.setItem('tasks', save);
+};
+
+const generateTask = (myTask) => {
   const taskItem = document.createElement('div');
   taskItem.classList = 'list-item';
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
+  checkbox.checked = myTask.completed;
+
+  if (myTask.completed) {
+    taskItem.classList.add('done');
+  }
 
   const taskDesc = document.createElement('input');
   taskDesc.type = 'text';
-  taskDesc.value = `${tasks[e].description}`;
+  taskDesc.value = myTask.description;
+  taskDesc.setAttribute('disabled', '');
 
   const ellipses = document.createElement('button');
   ellipses.innerHTML = '<i class="uil uil-ellipsis-v"></i>';
@@ -42,7 +36,92 @@ tasks.forEach((task, e) => {
   taskItem.append(taskDesc);
   taskItem.append(ellipses);
 
+  checkbox.addEventListener('change', () => {
+    taskDesc.setAttribute('disabled', '');
+    myTask.completed = checkbox.checked;
+
+    if (myTask.completed) {
+      taskItem.classList.add('done');
+    } else {
+      taskItem.classList.remove('done');
+    }
+
+    storage();
+  });
+
+  taskDesc.addEventListener('input', () => {
+    taskItem.removeAttribute('disabled');
+    myTask.description = taskDesc.value;
+    storage();
+  });
+
+  taskDesc.addEventListener('blur', () => {
+    taskDesc.setAttribute('disabled', '');
+    ellipses.innerHTML = '<i class="uil uil-ellipsis-v"></i>';
+    storage();
+  });
+
+  taskItem.addEventListener('click', () => {
+    taskDesc.removeAttribute('disabled');
+    taskDesc.focus();
+    ellipses.innerHTML = '<i class="uil uil-trash-alt"></i>';
+
+    ellipses.addEventListener('focus', () => {
+      tasks = tasks.filter((i) => i.id !== myTask.id);
+      taskItem.remove();
+
+      for (let x = 0; x < tasks.length; x += 1) {
+        if (tasks[x].id > myTask.id) {
+          tasks[x].id -= 1;
+        }
+      }
+      storage();
+    });
+  });
+
+  return { taskItem, taskDesc, ellipses };
+};
+
+const createMyTask = () => {
+  const myTask = {
+    id: tasks.length + 1,
+    completed: false,
+    description: formInput.value,
+  };
+
+  tasks.push(myTask);
+
+  const { taskItem, taskDesc } = generateTask(myTask);
+
   taskContainer.append(taskItem);
-  taskDesc.removeAttribute('disabled');
   taskDesc.focus();
+
+  storage();
+};
+
+createTask.addEventListener('click', (e) => {
+  e.preventDefault();
+  const myTask = formInput.value;
+  if (myTask) {
+    createMyTask();
+    form.reset();
+  }
 });
+
+const loadTasks = () => {
+  const savedData = localStorage.getItem('tasks');
+  if (savedData) {
+    tasks = JSON.parse(savedData);
+  }
+};
+
+const display = () => {
+  loadTasks();
+  for (let i = 0; i < tasks.length; i += 1) {
+    const tasksAvailable = tasks[i];
+    const { taskItem } = generateTask(tasksAvailable);
+    taskContainer.append(taskItem);
+  }
+};
+display();
+
