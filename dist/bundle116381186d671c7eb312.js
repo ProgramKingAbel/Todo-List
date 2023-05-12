@@ -2,6 +2,174 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/modules/clearCompleted.js":
+/*!***************************************!*\
+  !*** ./src/modules/clearCompleted.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _filtered_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./filtered.js */ "./src/modules/filtered.js");
+
+var clearCompleted = function clearCompleted(tasks) {
+  tasks = tasks.filter(function (i) {
+    return !i.completed;
+  });
+  (0,_filtered_js__WEBPACK_IMPORTED_MODULE_0__["default"])(tasks);
+  document.location.reload();
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (clearCompleted);
+
+/***/ }),
+
+/***/ "./src/modules/filtered.js":
+/*!*********************************!*\
+  !*** ./src/modules/filtered.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var newId = function newId(newTasks) {
+  return newTasks.map(function (task, id) {
+    return _objectSpread(_objectSpread({}, task), {}, {
+      id: id + 1
+    });
+  });
+};
+var save = function save(newTasks) {
+  var updateTask = newId(newTasks);
+  localStorage.setItem('tasks', JSON.stringify(updateTask));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (save);
+
+/***/ }),
+
+/***/ "./src/modules/taskManager.js":
+/*!************************************!*\
+  !*** ./src/modules/taskManager.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createMyTask": () => (/* binding */ createMyTask),
+/* harmony export */   "generateTask": () => (/* binding */ generateTask),
+/* harmony export */   "storage": () => (/* binding */ storage)
+/* harmony export */ });
+var taskContainer = document.querySelector('.all-tasks');
+var formInput = document.querySelector('.input');
+var tasks = [];
+var storage = function storage() {
+  var save = JSON.stringify(tasks);
+  localStorage.setItem('tasks', save);
+};
+var generateTask = function generateTask(myTask) {
+  var taskItem = document.createElement('div');
+  taskItem.classList = 'list-item';
+  var checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.checked = myTask.completed;
+  if (myTask.completed) {
+    taskItem.classList.add('done');
+  }
+  var taskDesc = document.createElement('input');
+  taskDesc.type = 'text';
+  taskDesc.value = myTask.description;
+  taskDesc.setAttribute('disabled', '');
+  var ellipses = document.createElement('button');
+  ellipses.innerHTML = '<i class="uil uil-ellipsis-v"></i>';
+  taskItem.append(checkbox);
+  taskItem.append(taskDesc);
+  taskItem.append(ellipses);
+  checkbox.addEventListener('change', function () {
+    taskDesc.setAttribute('disabled', '');
+    myTask.completed = checkbox.checked;
+    if (myTask.completed) {
+      taskItem.classList.add('done');
+    } else {
+      taskItem.classList.remove('done');
+    }
+    storage();
+  });
+  taskDesc.addEventListener('input', function () {
+    taskItem.removeAttribute('disabled');
+    myTask.description = taskDesc.value;
+    storage();
+  });
+  taskDesc.addEventListener('blur', function () {
+    taskDesc.setAttribute('disabled', '');
+    ellipses.innerHTML = '<i class="uil uil-ellipsis-v"></i>';
+    storage();
+  });
+  taskItem.addEventListener('click', function () {
+    taskDesc.removeAttribute('disabled');
+    taskDesc.focus();
+    ellipses.innerHTML = '<i class="uil uil-trash-alt"></i>';
+    ellipses.addEventListener('focus', function () {
+      tasks = tasks.filter(function (i) {
+        return i.id !== myTask.id;
+      });
+      taskItem.remove();
+      for (var x = 0; x < tasks.length; x += 1) {
+        if (tasks[x].id > myTask.id) {
+          tasks[x].id -= 1;
+        }
+      }
+      storage();
+    });
+  });
+  return {
+    taskItem: taskItem,
+    taskDesc: taskDesc,
+    ellipses: ellipses
+  };
+};
+var createMyTask = function createMyTask() {
+  var myTask = {
+    id: tasks.length + 1,
+    completed: false,
+    description: formInput.value
+  };
+  tasks.push(myTask);
+  var _generateTask = generateTask(myTask),
+    taskItem = _generateTask.taskItem,
+    taskDesc = _generateTask.taskDesc;
+  taskContainer.append(taskItem);
+  taskDesc.focus();
+  storage();
+};
+var loadTasks = function loadTasks() {
+  var savedData = localStorage.getItem('tasks');
+  if (savedData) {
+    tasks = JSON.parse(savedData);
+  }
+};
+var display = function display() {
+  loadTasks();
+  for (var i = 0; i < tasks.length; i += 1) {
+    var tasksAvailable = tasks[i];
+    var _generateTask2 = generateTask(tasksAvailable),
+      taskItem = _generateTask2.taskItem;
+    taskContainer.append(taskItem);
+  }
+};
+display();
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/styles/main.css":
 /*!*******************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/styles/main.css ***!
@@ -549,79 +717,29 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_main_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/main.css */ "./src/styles/main.css");
+/* harmony import */ var _modules_taskManager_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/taskManager.js */ "./src/modules/taskManager.js");
+/* harmony import */ var _modules_clearCompleted_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/clearCompleted.js */ "./src/modules/clearCompleted.js");
 
-var taskContainer = document.querySelector('.all-tasks');
+
+
 var createTask = document.getElementById('create');
-var formInput = document.querySelector('.input');
 var form = document.querySelector('form');
-var tasks = [];
-var createMyTask = function createMyTask() {
-  var myTask = {
-    id: Date.now(),
-    completed: false,
-    description: formInput.value
-  };
-  tasks.push(myTask);
-  var _generateTask = generateTask(myTask),
-    taskItem = _generateTask.taskItem,
-    taskDesc = _generateTask.taskDesc;
-  taskContainer.append(taskItem);
-  taskDesc.removeAttribute('disabled');
-  taskDesc.focus();
-};
+var formInput = document.querySelector('.input');
+var clearButton = document.querySelector('#clearAll');
 createTask.addEventListener('click', function (e) {
   e.preventDefault();
   var myTask = formInput.value;
   if (myTask) {
-    createMyTask();
+    (0,_modules_taskManager_js__WEBPACK_IMPORTED_MODULE_1__.createMyTask)();
     form.reset();
   }
 });
-var generateTask = function generateTask(myTask) {
-  var taskItem = document.createElement('div');
-  taskItem.classList = 'list-item';
-  var checkbox = document.createElement('input');
-  checkbox.type = "checkbox";
-  checkbox.checked = myTask.completed;
-  if (myTask.completed) {
-    taskItem.classList.add('done');
-  }
-  var taskDesc = document.createElement('input');
-  taskDesc.type = "text";
-  taskDesc.value = myTask.description;
-  taskDesc.setAttribute("disabled", "");
-  var ellipses = document.createElement('button');
-  ellipses.innerHTML = "<i class=\"uil uil-ellipsis-v\"></i>";
-  console.log(ellipses);
-  taskItem.append(checkbox);
-  taskItem.append(taskDesc);
-  taskItem.append(ellipses);
-  checkbox.addEventListener("change", function () {
-    myTask.completed = checkbox.checked;
-    if (myTask.completed) {
-      taskItem.classList.add('done');
-    } else {
-      taskItem.classList.remove('done');
-    }
-  });
-  taskDesc.addEventListener('input', function () {
-    myTask.description = formInput.value;
-  });
-  taskDesc.addEventListener('blur', function () {
-    taskDesc.setAttribute('disabled', "");
-  });
-  taskDesc.addEventListener('hover', function () {
-    taskDesc.removeAttribute('disabled');
-    taskDesc.focus();
-  });
-  return {
-    taskItem: taskItem,
-    taskDesc: taskDesc,
-    ellipses: ellipses
-  };
-};
+clearButton.addEventListener('click', function () {
+  var tasks = JSON.parse(localStorage.getItem('tasks'));
+  (0,_modules_clearCompleted_js__WEBPACK_IMPORTED_MODULE_2__["default"])(tasks);
+});
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle8edf5b252272aa3895d3.js.map
+//# sourceMappingURL=bundle116381186d671c7eb312.js.map
