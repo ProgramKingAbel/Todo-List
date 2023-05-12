@@ -64,12 +64,24 @@ This is form where the user is able to add tasks to their Todo Lists.
 
 This is the details of details of tasks entered by the user, and can mark on completed tasks.
 
+**[Live project samples]**
+
+Application is deployed on Github Pages. You can find link in demo
+
+**[local Storage functionality]**
+
+Utilizes local storage for tasks storage
+
+**[Enabled functionality in terms of Inserting and Deleting of Tasks]**
+
+Works for individual as well as all tasks.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Yet to be released](https://programkingabel.github.com)
+- [View Application](https://programkingabel.github.io/Todo-List/dist/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -184,9 +196,7 @@ Github Pages:
 ## 🔭 Future Features <a name="future-features"></a>
 
 
-- [ ] **[Add Live project samples]**
-- [ ] **[Add local Storage functionality]**
-- [ ] **[Enable more functionality in terms of Inserting and Deleting of Tasks]**
+
 - [ ] **[Improve User Interface AND User Experience on the app]**
 
 
