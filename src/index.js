@@ -1,10 +1,12 @@
 import './styles/main.css';
 
 import { createMyTask } from './modules/taskManager.js';
+import clearCompleted from './modules/clearCompleted';
 
 const createTask = document.getElementById('create');
 const form = document.querySelector('form');
 const formInput = document.querySelector('.input');
+
 
 createTask.addEventListener('click', (e) => {
   e.preventDefault();
@@ -14,3 +16,4 @@ createTask.addEventListener('click', (e) => {
     form.reset();
   }
 });
+
