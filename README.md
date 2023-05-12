@@ -64,15 +64,15 @@ This is form where the user is able to add tasks to their Todo Lists.
 
 This is the details of details of tasks entered by the user, and can mark on completed tasks.
 
-**[Live project samples]**
+- **[Live project samples]**
 
 Application is deployed on Github Pages. You can find link in demo
 
-**[local Storage functionality]**
+- **[local Storage functionality]**
 
 Utilizes local storage for tasks storage
 
-**[Enabled functionality in terms of Inserting and Deleting of Tasks]**
+- **[Enabled functionality in terms of Inserting and Deleting of Tasks]**
 
 Works for individual as well as all tasks.
 
