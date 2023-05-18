@@ -1,5 +1,4 @@
 const taskContainer = document.querySelector('.all-tasks');
-const formInput = document.querySelector('.input');
 
 let tasks = [];
 
@@ -23,6 +22,7 @@ const generateTask = (myTask) => {
   const taskDesc = document.createElement('input');
   taskDesc.type = 'text';
   taskDesc.value = myTask.description;
+  taskDesc.classList = 'input-desc';
   taskDesc.setAttribute('disabled', '');
 
   const ellipses = document.createElement('button');
@@ -47,7 +47,7 @@ const generateTask = (myTask) => {
 
   taskDesc.addEventListener('input', () => {
     taskItem.removeAttribute('disabled');
-    myTask.description = taskDesc.value;
+    edit(myTask, taskDesc);
     storage();
   });
 
@@ -61,16 +61,10 @@ const generateTask = (myTask) => {
     taskDesc.removeAttribute('disabled');
     taskDesc.focus();
     ellipses.innerHTML = '<i class="uil uil-trash-alt"></i>';
-
+ 
     ellipses.addEventListener('focus', () => {
-      tasks = tasks.filter((i) => i.id !== myTask.id);
-      taskItem.remove();
-
-      for (let x = 0; x < tasks.length; x += 1) {
-        if (tasks[x].id > myTask.id) {
-          tasks[x].id -= 1;
-        }
-      }
+      const idX = myTask.id;
+      deleteTask(idX)
       storage();
     });
   });
@@ -78,18 +72,27 @@ const generateTask = (myTask) => {
   return { taskItem, taskDesc, ellipses };
 };
 
+
+const deleteTask = (idX) => {
+
+   tasks = tasks.filter((i) => i.id !== idX);
+  for (let x = 0; x < tasks.length; x += 1) {
+    if (tasks[x].id > idX) {
+      tasks[x].id -= 1;
+    }
+  }
+}
+
 const createMyTask = () => {
   const myTask = {
     id: tasks.length + 1,
     completed: false,
-    description: formInput.value,
+    description: document.querySelector('.input').value,
   };
-
+ 
   tasks.push(myTask);
-
   const { taskItem, taskDesc } = generateTask(myTask);
-
-  taskContainer.append(taskItem);
+  document.querySelector('.all-tasks').append(taskItem);
   taskDesc.focus();
 
   storage();
@@ -112,4 +115,4 @@ const display = () => {
 };
 display();
 
-export { generateTask, storage, createMyTask };
+export { generateTask, storage, createMyTask, deleteTask, edit };
