@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { createMyTask, deleteTask,edit } from "./taskManager"
+import { createMyTask, deleteTask } from "./taskManager"
 
 beforeEach(() => {
     
@@ -38,5 +38,17 @@ afterEach(() => {
 })
 
 
+describe("add & remove operations", () => {
+  test("add one item", () => {
+    createMyTask();
+    const tasks = document.querySelectorAll(".list-item");
+    expect(tasks).toHaveLength(1);
+  });
 
+  test("remove one item", () => {
+    deleteTask();
+    const tasks = document.querySelectorAll(".list-item");
+    expect(tasks).toHaveLength(0);
+  });
+});
 

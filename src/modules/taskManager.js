@@ -115,4 +115,4 @@ const display = () => {
 };
 display();
 
-export { generateTask, storage, createMyTask, deleteTask, edit };
+export { generateTask, storage, createMyTask, deleteTask};
