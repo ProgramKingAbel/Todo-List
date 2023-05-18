@@ -2,12 +2,10 @@
  * @jest-environment jsdom
  */
 
-import { createMyTask, deleteTask } from "./taskManager"
+import { createMyTask, deleteTask } from './taskManager';
 
 beforeEach(() => {
-    
-    
-    document.body.innerHTML = `
+  document.body.innerHTML = `
 <div class="wrapper" id="container">
 <div class="heading">
     <h3>Demo</h3>
@@ -28,27 +26,23 @@ beforeEach(() => {
 <div class="clear">
     <button id="clearAll">Clear all Completed</button> 
 </div>
-</div>`
-   
-
+</div>`;
 });
 
 afterEach(() => {
-    document.body.innerHTML = '';
-})
+  document.body.innerHTML = '';
+});
 
-
-describe("add & remove operations", () => {
-  test("add one item", () => {
+describe('add & remove operations', () => {
+  test('add one item', () => {
     createMyTask();
-    const tasks = document.querySelectorAll(".list-item");
+    const tasks = document.querySelectorAll('.list-item');
     expect(tasks).toHaveLength(1);
   });
 
-  test("remove one item", () => {
+  test('remove one item', () => {
     deleteTask();
-    const tasks = document.querySelectorAll(".list-item");
+    const tasks = document.querySelectorAll('.list-item');
     expect(tasks).toHaveLength(0);
   });
 });
-

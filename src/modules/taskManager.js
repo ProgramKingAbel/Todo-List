@@ -61,10 +61,10 @@ const generateTask = (myTask) => {
     taskDesc.removeAttribute('disabled');
     taskDesc.focus();
     ellipses.innerHTML = '<i class="uil uil-trash-alt"></i>';
- 
+
     ellipses.addEventListener('focus', () => {
       const idX = myTask.id;
-      deleteTask(idX)
+      deleteTask(idX);
       storage();
     });
   });
@@ -72,16 +72,14 @@ const generateTask = (myTask) => {
   return { taskItem, taskDesc, ellipses };
 };
 
-
 const deleteTask = (idX) => {
-
-   tasks = tasks.filter((i) => i.id !== idX);
+  tasks = tasks.filter((i) => i.id !== idX);
   for (let x = 0; x < tasks.length; x += 1) {
     if (tasks[x].id > idX) {
       tasks[x].id -= 1;
     }
   }
-}
+};
 
 const createMyTask = () => {
   const myTask = {
@@ -89,7 +87,7 @@ const createMyTask = () => {
     completed: false,
     description: document.querySelector('.input').value,
   };
- 
+
   tasks.push(myTask);
   const { taskItem, taskDesc } = generateTask(myTask);
   document.querySelector('.all-tasks').append(taskItem);
@@ -115,4 +113,6 @@ const display = () => {
 };
 display();
 
-export { generateTask, storage, createMyTask, deleteTask};
+export {
+  generateTask, storage, createMyTask, deleteTask,
+};
