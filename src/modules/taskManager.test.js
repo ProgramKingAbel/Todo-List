@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { createMyTask, deleteTask } from './taskManager';
+import { createMyTask, deleteTask } from './taskManager.js';
 
 beforeEach(() => {
   document.body.innerHTML = `

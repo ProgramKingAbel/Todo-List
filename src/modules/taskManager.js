@@ -2,6 +2,15 @@ const taskContainer = document.querySelector('.all-tasks');
 
 let tasks = [];
 
+const deleteTask = (idX) => {
+  tasks = tasks.filter((i) => i.id !== idX);
+  for (let x = 0; x < tasks.length; x += 1) {
+    if (tasks[x].id > idX) {
+      tasks[x].id -= 1;
+    }
+  }
+};
+
 const storage = () => {
   const save = JSON.stringify(tasks);
   localStorage.setItem('tasks', save);
@@ -47,7 +56,7 @@ const generateTask = (myTask) => {
 
   taskDesc.addEventListener('input', () => {
     taskItem.removeAttribute('disabled');
-    edit(myTask, taskDesc);
+    myTask.description = taskDesc.value;
     storage();
   });
 
@@ -70,15 +79,6 @@ const generateTask = (myTask) => {
   });
 
   return { taskItem, taskDesc, ellipses };
-};
-
-const deleteTask = (idX) => {
-  tasks = tasks.filter((i) => i.id !== idX);
-  for (let x = 0; x < tasks.length; x += 1) {
-    if (tasks[x].id > idX) {
-      tasks[x].id -= 1;
-    }
-  }
 };
 
 const createMyTask = () => {
