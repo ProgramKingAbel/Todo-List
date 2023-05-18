@@ -1,9 +1,9 @@
 import save from './filtered.js';
 
 const clearCompleted = (tasks) => {
-  tasks = tasks.filter((i) => !i.completed);
-  save(tasks);
-  document.location.reload();
+  const updatedTasks = tasks.filter((task) => !task.completed);
+  save(updatedTasks);
+  return updatedTasks;
 };
 
 export default clearCompleted;
